@@ -30,7 +30,7 @@
 - **解析出的工具调用一律照实返回**：不按「工具名是否在声明里」过滤、也不按「同名同参数」去重——
   两者都会把整轮输出吞成空回答，agent 那边只会看到「模型未返回正文或工具调用」（v2.0.3 修）
 - **模型自造工具结果只清洗、不打断**：`RESULT` 单独成段 + 多写法识别 + 出口剔除；**绝不因为检测到编造就中止生成/截断回答**（见下文）
-- **超长上下文自动转附件**：超过 10 万字时把较早的对话塞进 `.txt` 附件，用 `ref_file_ids` 注入（见下文）
+- **超长上下文自动转附件**：超过 165 万字时把较早的对话塞进 `.txt` 附件，用 `ref_file_ids` 注入（见下文）
 - **图片输入**：`image_url`（data URL 或 http 链接）→ 自动传成网页附件 → `ref_file_ids`
 - 「深度思考」默认打开，思考内容走 `reasoning_content`，且**一定排在正文之前**
 - 登录态用 `userToken` 注入；直连模式不需要浏览器
@@ -387,7 +387,7 @@ npm run auth -- --list      # 查看号池（token 打码）
 
 ### 超长上下文：附件注入
 
-网页输入框单次最多 **10 万字**，超了接口直接报错（`context_length_exceeded`）。但聊天接口的
+网页输入框单次最多 **165 万字**，超了接口直接报错（`context_length_exceeded`）。但聊天接口的
 `ref_file_ids` 可以挂附件，附件不占输入框长度，所以拼接后的 prompt 超限时会自动拆一次：
 
 ```
@@ -490,7 +490,7 @@ npm run auth -- --list      # 查看号池（token 打码）
 | `WARMUP` | `true` | 启动时预热（browser：Chromium；direct：PoW+会话） |
 | `BROWSER_CAPTURE` | `true` | browser 引擎抓页面原始补全流，保证工具调用 token 不丢 |
 | `BROWSER_CAPTURE_WAIT_MS` | `20000` | DOM 判定结束后，最多再等原始流收尾多久（补尾部 token） |
-| `MAX_PROMPT_CHARS` | `100000` | 单次输入框上限；超过就拆附件 |
+| `MAX_PROMPT_CHARS` | `1650000` | 单次输入框上限；超过就拆附件 |
 | `MAX_ATTACHMENT_CHARS` | `2000000` | 拆到附件的上下文上限（字符） |
 | `OVERFLOW_TO_ATTACHMENT` | `true` | 超长时转附件；`false` 则超限直接 413 |
 | `IDLE_SHUTDOWN_MS` | `900000` | 浏览器引擎空闲回收 |
