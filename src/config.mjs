@@ -158,7 +158,7 @@ export function loadConfig(env = process.env) {
       warmup: bool(env.WARMUP, true),
       saveArtifacts: bool(env.SAVE_ARTIFACTS, true),
       // 网页输入框单次上限；超过就把较早的上下文拆成附件
-      maxPromptChars: int(env.MAX_PROMPT_CHARS, 100_000),
+      maxPromptChars: int(env.MAX_PROMPT_CHARS, 1650000),
       // 附件注入：拆分出去的上下文最多多少字符（按 3 字节/字的 UTF-8 也远小于上传上限）
       maxAttachmentChars: int(env.MAX_ATTACHMENT_CHARS, 2_000_000),
       // 关掉就恢复旧行为：超长直接 413
